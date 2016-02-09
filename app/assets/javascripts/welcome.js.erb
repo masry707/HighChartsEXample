@@ -1,0 +1,85 @@
+//# Place all the behaviors and hooks related to the matching controller here.
+//# All this logic will automatically be available in application.js.
+//# You can use CoffeeScript in this file: http://coffeescript.org/
+
+$(document).ready(function() {
+    var defaultOptions = {
+        chart: {
+            renderTo: 'container',
+            type: 'bar'
+        },
+        title: {
+            text: 'Fruit Consumption'
+        },
+        xAxis: {
+            categories: ['Apples', 'Bananas', 'Oranges']
+        },
+        yAxis: {
+            title: {
+                text: 'Fruit eaten'
+            }
+        },
+        series: [{
+            name: 'Jane',
+            data: [1, 0, 4]
+        }, {
+            name: 'John',
+            data: [5, 7, 3]
+        }]
+    };
+
+    // var $P50 = require('./_variables_json.json').P50;
+
+    var defaultTheme = {
+        colors: [ '<%= CSS_VARIABLES[:P50] %>', '<%= CSS_VARIABLES[:P500]%>']
+    };
+
+    var darkTheme = {
+        chart: {
+            backgroundColor: {
+                linearGradient: [0, 0, 250, 500],
+                stops: [
+                    [0, 'rgb(255, 0, 0)'],
+                    [1, 'rgb(0, 0, 0)']
+                ]
+            }
+        },
+        colors: [ '<%= CSS_VARIABLES[:P100] %>', '<%= CSS_VARIABLES[:P500]%>' ]
+    };
+
+
+    var theme = localStorage.getItem("theme");
+    var HCTheme = JSON.parse(localStorage.getItem("HCTheme"));
+
+    var loadHCTheme = function(HCTheme) {
+        var newOptions = $.extend(true, {}, defaultOptions, HCTheme);
+        createChart(newOptions);
+    };
+
+    var createChart = function(options) {
+        return new Highcharts.Chart(options);
+    };
+
+    // changing the site theme
+    if (theme == null && HCTheme === null) {
+        $('html').removeAttr('class').addClass('theme1');         // default site theme
+        loadHCTheme(defaultTheme);                                // default HighChart theme
+    } else {
+        $('html').removeAttr('class').addClass(theme);
+        loadHCTheme(HCTheme);
+    }
+
+    $('.ch-th1').on('click', function() {
+        $('html').removeAttr('class').addClass('theme1');
+        localStorage.setItem('theme', 'theme1');
+        loadHCTheme(defaultTheme);
+        localStorage.setItem('HCTheme', JSON.stringify(defaultTheme));
+    });
+
+    $('.ch-th2').on('click', function() {
+        $('html').removeAttr('class').addClass('theme2');
+        localStorage.setItem('theme', 'theme2');
+        loadHCTheme(darkTheme);
+        localStorage.setItem('HCTheme', JSON.stringify(darkTheme));
+    });
+});
