@@ -26,7 +26,7 @@ $(document).ready(function() {
             min: min,
             max: max,
             label: {
-                format: '%Y-%m-%d'
+                format: '{value:%Y-%m-%d}'
             }
         }
     }
@@ -34,7 +34,27 @@ $(document).ready(function() {
     function yAxis() {
         return {
             label: {
-                format: '.1f%'
+                format: '{point.y:.1f}%'
+            }
+        }
+    }
+
+    function legendOptions(){
+        return {
+            layout: 'vertical',
+            align: 'left',
+            x: 50,
+            verticalAlign: 'top',
+            y: 70,
+            floating: true,
+            borderColor: '#707070' ,
+            borderWidth: 1,
+            backgroundColor:'rgba(234, 239, 234,0.6)',
+            fillOpacity:0.1,
+            itemStyle: {
+                fontWeight: 'normal',
+                fontSize: '9.75px',
+                font: 'sans-serif'
             }
         }
     }
@@ -60,7 +80,8 @@ $(document).ready(function() {
             chart: chartOptions(),
             xAxis: xAxis(new Date(2015, 5, 30), new Date(2016, 12, 31)),
             yAxis: yAxis(),
-            series: seriesOptions()
+            series: seriesOptions(),
+            legend: legendOptions()
         });
     }
     createChart();
